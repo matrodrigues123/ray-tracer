@@ -36,6 +36,16 @@ impl std::ops::Mul<f64> for RGBColor {
         }
     }
 }
+impl std::ops::Mul<RGBColor> for RGBColor {
+    type Output = RGBColor;
+    fn mul(self, rhs: RGBColor) -> Self::Output {
+        RGBColor {
+            r: self.r*rhs.r,
+            g: self.g*rhs.g,
+            b: self.b*rhs.b,
+        }
+    }
+}
 impl std::ops::Add<RGBColor> for RGBColor {
     type Output = RGBColor;
     fn add(self, rhs: RGBColor) -> Self::Output {

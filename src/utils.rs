@@ -1,4 +1,4 @@
-use crate::{vector3::Vector3, ray::Ray, hittable::{World, HitRecord, Hittable}, color::RGBColor};
+use crate::{vector3::Vector3, ray::Ray, hittable::{World, HitRecord, Hittable}, color::RGBColor, material::LightReaction};
 use fastrand::Rng;
 
 pub fn clamp(x: f64, min: f64, max: f64) -> f64{
@@ -48,12 +48,12 @@ pub fn ray_color(ray: &Ray, world: &World, depth: i32, rng: &Rng) -> RGBColor {
 
     match world.hit(ray, 0.001, f64::INFINITY) {
         Some(rec) => {
-            let target = rec.point + random_in_hemisphere(rng, rec.normal);
-
-
-            let rand_ray = Ray::new(rec.point, target - rec.point);
-
-            return ray_color(&rand_ray, &world, depth - 1, rng)*0.5
+            match rec.material.scatter(rng, ray, &rec) {
+                Some(scattered_ray) => {
+                    return rec.material.attenuation() * ray_color(&scattered_ray, world, depth - 1, rng)
+                },
+                None => return RGBColor::new(0.0,0.0,0.0),
+            }
         },
         None => {
             let unit_direction = ray.direction.unit();

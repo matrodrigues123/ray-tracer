@@ -15,12 +15,16 @@ fn main() {
     let mut image_file = File::create("image.ppm").expect("Failed to create file");
 
     // World
-    let material_center = Material::Lambertian(RGBColor::new(0.7, 0.3, 0.3));
-    let material_ground = Material::Lambertian(RGBColor::new(0.8, 0.8, 0.0));
+    let material_ground = Material::Lambertian( RGBColor::new(0.8, 0.8, 0.0));
+    let material_center = Material::Lambertian( RGBColor::new(0.7, 0.3, 0.3));
+    let material_left = Material::Metal( RGBColor::new(0.8,0.8,0.8));
+    let material_right = Material::Metal( RGBColor::new(0.8,0.6,0.2));
 
     let mut world = World::new();
-    world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(0.0,0.0,-1.0), material: material_center});
     world.add(Shape::Sphere { radius: 100.0, center: Vector3::new(0.0,-100.5,-1.0), material: material_ground});
+    world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(0.0,0.0,-1.0), material: material_center});
+    world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(-1.0,0.0,-1.0), material: material_left});
+    world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(1.0,0.0,-1.0), material: material_right});
 
     // Camera
     let cam = Camera::new(aspect_ratio, 2.0, 1.0);

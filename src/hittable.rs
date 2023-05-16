@@ -111,6 +111,7 @@ impl Hittable for World {
 
                     hit_rec.point = curr_rec.point;
                     hit_rec.normal = curr_rec.normal;
+                    hit_rec.material = curr_rec.material;
                     hit_rec.t = curr_rec.t;
                     hit_rec.front_face = curr_rec.front_face;
                 },
