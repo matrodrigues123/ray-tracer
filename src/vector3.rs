@@ -28,6 +28,13 @@ impl Vector3 {
     pub fn unit(&self) -> Vector3 {
         self.clone()/self.length()
     }
+    pub fn near_zero(&self) -> bool {
+        let s = 1e-8;
+        (self.x.abs() < s) && (self.y.abs() < s) && (self.z.abs() < s)
+    }
+    pub fn reflect(&self, normal: Vector3) -> Vector3 {
+        *self - normal*self.dot(normal)*2.0
+    }
 }
 
 

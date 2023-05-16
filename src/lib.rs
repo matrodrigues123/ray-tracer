@@ -4,3 +4,4 @@ pub mod ray;
 pub mod hittable;
 pub mod camera;
 pub mod utils;
+pub mod material;

@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::Write;
 use crate::utils::{clamp};
+#[derive(Debug,PartialEq,Clone,Copy)]
 pub struct RGBColor {
     r: f64,
     g: f64,
