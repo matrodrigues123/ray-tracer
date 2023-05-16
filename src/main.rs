@@ -3,7 +3,6 @@ use std::io::Write;
 use rust_ray_tracer::{vector3::Vector3, hittable::{Shape, World}, camera::Camera, color::RGBColor, utils::ray_color};
 
 fn main() {
-
     // Image
     let rng = fastrand::Rng::new();
     rng.seed(7);
@@ -11,7 +10,7 @@ fn main() {
     let width = 400;
     let height = ((width as f64)/aspect_ratio) as i32;
     let samples_per_pixel = 100;
-    let max_depth = 2;
+    let max_depth = 50;
 
     let mut image_file = File::create("image.ppm").expect("Failed to create file");
 

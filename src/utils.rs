@@ -42,7 +42,7 @@ pub fn ray_color(ray: &Ray, world: &World, depth: i32, rng: &Rng) -> RGBColor {
         t: 0.0,
         front_face: false,
     };
-    if world.hit(ray, 0.0, f64::INFINITY, &mut rec) {
+    if world.hit(ray, 0.001, f64::INFINITY, &mut rec) {
         let target = rec.point + rec.normal + random_vec_in_unit_sphere(rng);
 
 
