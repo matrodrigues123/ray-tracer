@@ -7,14 +7,14 @@ pub trait LightReaction {
 #[derive(Clone, Copy)]
 pub enum Material {
     Lambertian(RGBColor),
-    Metal(RGBColor),
+    Metal(RGBColor, f64),
 }
 
 impl Material {
     pub fn attenuation(&self) -> RGBColor {
         match self {
             Material::Lambertian(attenuation) => *attenuation,
-            Material::Metal (attenuation) => *attenuation,
+            Material::Metal (attenuation, _fuzz) => *attenuation,
         }
     }
 }
@@ -35,10 +35,10 @@ impl LightReaction for Material {
                 return Some(scattered)
                 
             },
-            Material::Metal(_) => {
+            Material::Metal(_, fuzz) => {
                 // the ray isnt randomly scattered, but is reflected
                 let reflected = r_in.direction.unit().reflect(rec.normal);
-                let scattered = Ray::new(rec.point, reflected);
+                let scattered = Ray::new(rec.point, reflected + random_vec_in_unit_sphere(rng)*(*fuzz));
 
                 if scattered.direction.dot(rec.normal) > 0.0 {
                     return Some(scattered)    

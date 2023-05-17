@@ -17,8 +17,8 @@ fn main() {
     // World
     let material_ground = Material::Lambertian( RGBColor::new(0.8, 0.8, 0.0));
     let material_center = Material::Lambertian( RGBColor::new(0.7, 0.3, 0.3));
-    let material_left = Material::Metal( RGBColor::new(0.8,0.8,0.8));
-    let material_right = Material::Metal( RGBColor::new(0.8,0.6,0.2));
+    let material_left = Material::Metal( RGBColor::new(0.8,0.8,0.8), 0.3);
+    let material_right = Material::Metal( RGBColor::new(0.8,0.6,0.2), 1.0);
 
     let mut world = World::new();
     world.add(Shape::Sphere { radius: 100.0, center: Vector3::new(0.0,-100.5,-1.0), material: material_ground});
