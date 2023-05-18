@@ -18,7 +18,7 @@ impl Vector3 {
     pub fn dot(&self, u: Vector3) -> f64 {
         u.x*self.x + u.y*self.y + u.z*self.z
     }
-    fn cross(&self, u: Vector3) -> Vector3 {
+    pub fn cross(&self, u: Vector3) -> Vector3 {
         Vector3 {
             x: self.y*u.z - self.z*u.y,
             y: self.z*u.x - self.x*u.z,
@@ -34,6 +34,13 @@ impl Vector3 {
     }
     pub fn reflect(&self, normal: Vector3) -> Vector3 {
         *self - normal*self.dot(normal)*2.0
+    }
+    pub fn refract(&self, normal: Vector3, snell_refrac_ratio: f64) -> Vector3 {
+        let cos_theta = f64::min(-self.dot(normal), 1.0);
+        let r_out_perp = (*self + normal * cos_theta) * snell_refrac_ratio;
+        let r_out_parallel = normal * (-f64::sqrt(f64::abs(1.0 - r_out_perp.length_squared())));
+
+        r_out_perp + r_out_parallel
     }
 }
 

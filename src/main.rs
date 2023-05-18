@@ -1,11 +1,11 @@
-use std::fs::File;
+use std::{fs::File, f32::consts::PI};
 use std::io::Write;
 use rust_ray_tracer::{vector3::Vector3, hittable::{Shape, World}, camera::Camera, color::RGBColor, utils::ray_color, material::Material};
 
 fn main() {
     // Image
     let rng = fastrand::Rng::new();
-    rng.seed(7);
+    rng.seed(10);
     let aspect_ratio = 16.0/9.0;
     let width = 400;
     let height = ((width as f64)/aspect_ratio) as i32;
@@ -15,19 +15,56 @@ fn main() {
     let mut image_file = File::create("image.ppm").expect("Failed to create file");
 
     // World
-    let material_ground = Material::Lambertian( RGBColor::new(0.8, 0.8, 0.0));
-    let material_center = Material::Lambertian( RGBColor::new(0.7, 0.3, 0.3));
-    let material_left = Material::Metal( RGBColor::new(0.8,0.8,0.8), 0.3);
-    let material_right = Material::Metal( RGBColor::new(0.8,0.6,0.2), 1.0);
-
     let mut world = World::new();
-    world.add(Shape::Sphere { radius: 100.0, center: Vector3::new(0.0,-100.5,-1.0), material: material_ground});
-    world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(0.0,0.0,-1.0), material: material_center});
-    world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(-1.0,0.0,-1.0), material: material_left});
-    world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(1.0,0.0,-1.0), material: material_right});
+
+    // let material_ground = Material::Lambertian( RGBColor::new(0.8, 0.8, 0.0));
+    // let material_center = Material::Lambertian( RGBColor::new(0.1, 0.2, 0.5));
+    // // let material_left = Material::Metal( RGBColor::new(0.8,0.8,0.8), 0.3);
+    // let material_left = Material::Dielectric( RGBColor::new(1.0,1.0,1.0), 1.5);
+    // let material_right = Material::Metal( RGBColor::new(0.8,0.6,0.2), 0.0);
+
+    // world.add(Shape::Sphere { radius: 100.0, center: Vector3::new(0.0,-100.5,-1.0), material: material_ground});
+    // world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(0.0,0.0,-1.0), material: material_center});
+    // world.add(Shape::Sphere { radius: -0.5, center: Vector3::new(-1.0,0.0,-1.0), material: material_left});
+    // world.add(Shape::Sphere { radius: 0.5, center: Vector3::new(1.0,0.0,-1.0), material: material_right});
+
+    let material_ground = Material::Lambertian(RGBColor::new(0.8, 0.8, 0.0));
+    let material_center = Material::Lambertian(RGBColor::new(0.1, 0.2, 0.5));
+    let material_left = Material::Dielectric(RGBColor::new(1.0,1.0,1.0), 1.5);
+    let material_right = Material::Metal(RGBColor::new(0.8, 0.6, 0.2), 0.0);
+
+    world.add(Shape::Sphere { 
+        center: Vector3::new(0.0, -100.5, -1.0), 
+        radius: 100.0, 
+        material: material_ground 
+    });
+    world.add(Shape::Sphere { 
+        center: Vector3::new(0.0, 0.0, -1.0), 
+        radius: 0.5, 
+        material: material_center 
+    });
+    world.add(Shape::Sphere { 
+        center: Vector3::new(-1.0, 0.0, -1.0), 
+        radius: 0.5, 
+        material: material_left
+    });
+    world.add(Shape::Sphere { 
+        center: Vector3::new(-1.0, 0.0, -1.0), 
+        radius: -0.45, 
+        material: material_left 
+    });
+    world.add(Shape::Sphere { 
+        center: Vector3::new(1.0, 0.0, -1.0), 
+        radius: 0.5, 
+        material: material_right 
+    });
+
+
 
     // Camera
-    let cam = Camera::new(aspect_ratio, 2.0, 1.0);
+    let cam = Camera::new(Vector3::new(-2.0,2.0,1.0),
+    Vector3::new(0.0,0.0,-1.0), Vector3::new(0.0,1.0,0.0),
+    20.0, aspect_ratio);
 
     
     // Render
