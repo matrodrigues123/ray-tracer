@@ -12,7 +12,7 @@ impl Vector3 {
     pub fn length_squared(&self) -> f64 {
         self.x.powi(2) + self.y.powi(2) + self.z.powi(2)
     }
-    fn length(&self) -> f64 {
+    pub fn length(&self) -> f64 {
         self.length_squared().powf(0.5)
     }
     pub fn dot(&self, u: Vector3) -> f64 {

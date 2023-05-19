@@ -1,5 +1,7 @@
 use std::fs::File;
 use std::io::Write;
+use fastrand::Rng;
+
 use crate::utils::{clamp};
 #[derive(Debug,PartialEq,Clone,Copy)]
 pub struct RGBColor {
@@ -23,6 +25,17 @@ impl RGBColor {
 
 
         write!(f, "{} {} {}\n", r, g, b).expect("failed to write to data");
+    }
+
+    pub fn random(rng: &Rng) -> RGBColor{
+        RGBColor::new(rng.f64(), rng.f64(), rng.f64())
+    }
+    pub fn random_interval(min: f64, max: f64, rng: &Rng) -> RGBColor {
+        RGBColor::new(
+            min + (max - min) * rng.f64(),
+            min + (max - min) * rng.f64(),
+            min + (max - min) * rng.f64(),
+        )
     }
 }
 
